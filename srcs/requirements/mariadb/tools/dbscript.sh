@@ -3,6 +3,10 @@
 
 service mysql start;
 
+until mysqladmin ping >/dev/null 2>&1; do
+    sleep 1
+done
+
 # log into MariaDB as root and create database and the user
 mysql -e "CREATE DATABASE IF NOT EXISTS \`${SQL_DATABASE}\`;"
 mysql -e "CREATE USER IF NOT EXISTS \`${SQL_USER}\`@'localhost' IDENTIFIED BY '${SQL_PASSWORD}';"

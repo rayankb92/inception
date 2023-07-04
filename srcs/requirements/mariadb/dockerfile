@@ -2,26 +2,35 @@
 FROM debian:buster
 
 # install MariaDB and other dependencies
-RUN apt-get update -y \
-	&& apt-get upgrade -y \
-	&& apt-get install -y mariadb-server \
-	&& apt-get install -y mariadb-client \
-	&& apt-get install -y procps
+RUN apt update -y \
+	&& apt upgrade -y \
+	&& apt install -y mariadb-server \
+	&& apt install -y mariadb-client \
+	&& apt install -y procps
 
 
 # copy the provided config file to the container
-COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+COPY ./conf/50-server.cnf /etc/mysql/my.cnf
+
+COPY ./tools/dbscript.sh ./
 
 RUN mkdir -p /var/run/mysqld
 RUN mkdir -p /var/lib/mysql
-RUN chown mysql:mysql /var/run/mysqld/
-RUN chmod -R 755 /var/run/mysqld/
-RUN chown mysql:mysql /var/lib/mysql/
-RUN chmod -R 755 /var/lib
+RUN mkdir -p /var/log/mysql
+
+RUN chown -R mysql:mysql /var/run/mysqld
+RUN chown -R mysql:mysql /var/lib/mysql
+RUN chown -R mysql:mysql /var/log/mysql
+
+RUN chmod -R 755 /var/run/mysqld
+RUN chmod -R 755 /var/log/mysql
+RUN chmod -R 755 /var/lib/mysql
+
+RUN chmod +x ./dbscript.sh && \
+	chown mysql:mysql ./dbscript.sh
 
 EXPOSE 3306
 
-COPY ./tools/dbscript.sh ./
-RUN chmod +x ./dbscript.sh
+USER mysql:mysql
 
 ENTRYPOINT ["bash", "./dbscript.sh"]

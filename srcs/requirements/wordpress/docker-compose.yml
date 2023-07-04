@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  wordpress:
+    build:
+      context: .
+    image: wordpress:v1
+    container_name: wordpress_container
+    restart: always
+    env_file:
+      - ../../.env

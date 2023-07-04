@@ -1,8 +1,61 @@
 version: '3'
 
 services:
-  myfirstservice:
-    image: alpine
+  mariadb:
+    build:
+      context: requirements/mariadb
+    image: mariadb:v1
+    container_name: mariadb_container
+    networks:
+      - wp-nginx-mariadb
     restart: always
-    container_name: MyAlpine
-    entrypoint: ps aux
+    env_file:
+      - ./.env
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 20s
+      retries: 10
+
+  nginx:
+    build:
+      context: ./requirements/nginx
+    container_name: nginx_container
+    networks:
+      - wp-nginx-mariadb
+    image: nginx:v1
+    restart: always
+    ports:
+      - "443:443"
+    env_file:
+      - .env
+    volumes:
+      - wordpress_data:/var/www/html/wordpress
+    depends_on:
+      - wordpress
+
+  wordpress:
+    build:
+      context: ./requirements/wordpress
+    container_name: wordpress_container
+    networks:
+        - wp-nginx-mariadb
+    image: wordpress:v1
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - wordpress_data:/var/www/html/wordpress
+    depends_on:
+      mariadb:
+       condition: service_healthy
+
+volumes:
+  mariadb_data:
+  nginx_config:
+  wordpress_data:
+
+networks:
+  wp-nginx-mariadb:
