@@ -3,14 +3,14 @@ version: '3'
 services:
   mariadb:
     build:
-      context: requirements/mariadb
+      context: srcs/requirements/mariadb
     image: mariadb:v1
     container_name: mariadb_container
     networks:
       - wp-nginx-mariadb
     restart: always
     env_file:
-      - ./.env
+      - srcs/.env
     volumes:
       - mariadb_data:/var/lib/mysql
     healthcheck:
@@ -21,7 +21,7 @@ services:
 
   nginx:
     build:
-      context: ./requirements/nginx
+      context: ./srcs/requirements/nginx
     container_name: nginx_container
     networks:
       - wp-nginx-mariadb
@@ -30,7 +30,7 @@ services:
     ports:
       - "443:443"
     env_file:
-      - .env
+      - srcs/.env
     volumes:
       - wordpress_data:/var/www/html/wordpress
     depends_on:
@@ -38,14 +38,14 @@ services:
 
   wordpress:
     build:
-      context: ./requirements/wordpress
+      context: ./srcs/requirements/wordpress
     container_name: wordpress_container
     networks:
         - wp-nginx-mariadb
     image: wordpress:v1
     restart: always
     env_file:
-      - .env
+      - srcs/.env
     volumes:
       - wordpress_data:/var/www/html/wordpress
     depends_on:

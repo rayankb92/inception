@@ -31,6 +31,5 @@ RUN chmod +x ./dbscript.sh && \
 
 EXPOSE 3306
 
-USER mysql:mysql
 
 ENTRYPOINT ["bash", "./dbscript.sh"]
