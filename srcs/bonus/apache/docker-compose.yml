@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  apache:
+    build:
+      context: .
+    container_name: apache_container
+    image: ssh:v1
+    restart: always
+    ports:
+      - "80:80"

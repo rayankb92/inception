@@ -1,0 +1,14 @@
+# Utilisez l'image de base Debian
+FROM debian:buster
+
+# Mettez à jour le système de packages et installez Apache
+RUN apt-get update && apt-get install -y apache2
+
+# Copiez les fichiers de votre site Web dans le répertoire Apache
+COPY site/index.html /var/www/html
+
+# Exposez le port 80 pour permettre l'accès au site Web
+EXPOSE 80
+
+# Démarrez Apache lors du lancement du conteneur
+CMD ["apache2ctl", "-D", "FOREGROUND"]
