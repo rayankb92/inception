@@ -7,7 +7,9 @@ networks:
 volumes:
 	bash -c "docker volume ls"
 fclean: clean
-	bash -c "docker image prune --force; docker image rm nginx:v1 wordpress:v1 mariadb:v1 ssh:v1"
+	bash -c "docker image prune --force; docker image \
+	rm nginx:v1 wordpress:v1 mariadb:v1 ssh:v1 adminer:v1 \
+	ftp:v1"
 
 re: fclean all
 

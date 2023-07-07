@@ -1,1 +1,17 @@
-FROM debian:buster
+FROM debian:12
+
+# Mettre à jour les paquets disponibles
+RUN apt-get update
+
+# Installer les dépendances nécessaires pour Adminer
+RUN apt-get install -y wget php php-mysql
+
+# Télécharger Adminer et le placer dans /var/www/html
+RUN mkdir -p /var/www/html/adminer \
+    && wget -O /var/www/html/adminer/index.php https://www.adminer.org/latest.php
+
+# Exposer le port 80 pour accéder à Adminer
+EXPOSE 80
+
+# Commande par défaut pour lancer le conteneur
+CMD ["php", "-S", "0.0.0.0:80", "-t", "/var/www/html"]

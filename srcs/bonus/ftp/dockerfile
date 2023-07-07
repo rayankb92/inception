@@ -1,0 +1,33 @@
+# Utilisez l'image Debian 10 officielle
+FROM debian:10
+
+# Mettre à jour les paquets et installer vsftpd
+RUN apt-get update \
+    && apt-get install -y vsftpd
+
+# Copier le fichier de configuration personnalisé
+COPY conf/vsftpd.conf /etc/vsftpd.conf
+
+# Exposer le port 20 (FTP Control) et le port 21 (FTP Data)
+EXPOSE 20 21
+
+# Exécuter vsftpd en premier plan
+CMD ["vsftpd", "/etc/vsftpd.conf"]
+
+
+# FROM debian:buster
+
+# # Installation des paquets nécessaires
+# RUN apt-get update && apt-get install -y vsftpd
+
+# # Configuration de l'utilisateur anonyme
+# RUN echo "anonymous_enable=YES" >> /etc/vsftpd.conf
+
+# # Configuration du répertoire de partage
+# RUN mkdir /ftp && chown nobody:nogroup /ftp
+
+# # Exposition du port FTP (port 21)
+# EXPOSE 21
+
+# # Commande par défaut pour lancer le serveur FTP
+# CMD ["/usr/sbin/vsftpd", "/etc/vsftpd.conf"]

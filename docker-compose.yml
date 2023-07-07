@@ -66,6 +66,29 @@ services:
       - wordpress_data:/home/user/wordpress_vol
       - mariadb_data:/home/user/mariadb_vol
 
+  adminer:
+    build:
+      context: ./srcs/bonus/adminer
+    container_name: adminer_container
+    image: adminer:v1
+    restart: always
+    ports:
+      - "7853:80"
+    networks:
+      - wp-nginx-mariadb
+
+  ftp:
+    build:
+      context: ./srcs/bonus/ftp
+    container_name: ftp_container
+    image: ftp:v1
+    restart: always
+    ports:
+      - "7852:21"
+      - "7851:20"
+    networks:
+      - ftserv
+
 volumes:
   mariadb_data:
   wordpress_data:
@@ -73,3 +96,4 @@ volumes:
 networks:
   wp-nginx-mariadb:
   sshnet:
+  ftserv:
