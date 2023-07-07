@@ -1,0 +1,43 @@
+# Utilisez l'image de base Debian
+FROM debian:buster
+
+# Mettez à jour le système de packages et installez les outils SSH
+RUN apt update && apt upgrade -y && apt install -y openssh-server
+
+# Copiez le fichier de configuration SSH
+COPY conf/sshd_config /etc/ssh/sshd_config
+
+RUN mkdir -p /run/sshd
+# Créez un utilisateur pour vous connecter
+
+RUN useradd -m -d /home/user -s /bin/bash rayan \
+    && echo 'rayan:pass' | chpasswd
+
+# RUN groupadd www-data
+# RUN usermod -aG www-data rayan
+
+# Exposez le port SSH
+EXPOSE 7854
+
+
+# Démarrez le service SSH lors du lancement du conteneur
+CMD ["/usr/sbin/sshd", "-D"]
+
+
+
+# FROM debian:buster
+
+# RUN apt update
+# RUN apt install openssh-server -y
+# RUN service ssh restart
+
+# RUN adduser
+
+# COPY conf/sshd_config /etc/ssh/sshd_config
+
+# RUN echo "toto\n" > tata
+# RUN service ssh restart
+
+# EXPOSE 3005
+
+# CMD ["/usr/sbin/sshd", "-D"]

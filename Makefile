@@ -7,7 +7,9 @@ networks:
 volumes:
 	bash -c "docker volume ls"
 fclean: clean
-	bash -c "docker image prune --force; docker image rm nginx:v1 wordpress:v1 mariadb:v1"
+	bash -c "docker image prune --force; docker image rm nginx:v1 wordpress:v1 mariadb:v1 ssh:v1"
+
+re: fclean all
 
 del_volumes:
 	bash -c "docker volume rm inception_mariadb_data inception_wordpress_data"

@@ -8,10 +8,10 @@ wp config create	--allow-root --dbname=${SQL_DATABASE} \
 			--dbuser=${SQL_USER} \
 			--dbpass=${SQL_PASSWORD} \
 			--dbhost=${SQL_HOST} \
-			--url=https://${DOMAIN_NAME};
+			--url=http://${DOMAIN_NAME};
 
 wp core install	--allow-root \
-			--url=https://${DOMAIN_NAME} \
+			--url=http://${DOMAIN_NAME} \
 			--title=${SITE_TITLE} \
 			--admin_user=${ADMIN_USER} \
 			--admin_password=${ADMIN_PASSWORD} \

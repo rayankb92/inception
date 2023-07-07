@@ -52,10 +52,24 @@ services:
       mariadb:
        condition: service_healthy
 
+  sshdocker:
+    build:
+      context: ./srcs/bonus/ssh
+    container_name: ssh_container
+    image: ssh:v1
+    restart: always
+    ports:
+      - "7854:7854"
+    networks:
+      - sshnet
+    volumes:
+      - wordpress_data:/home/user/wordpress_vol
+      - mariadb_data:/home/user/mariadb_vol
+
 volumes:
   mariadb_data:
-  nginx_config:
   wordpress_data:
 
 networks:
   wp-nginx-mariadb:
+  sshnet:
